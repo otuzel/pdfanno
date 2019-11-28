@@ -1,6 +1,5 @@
 import axios from "axios";
 import * as annoUI from "anno-ui";
-import loadFiles from "./loadFiles";
 import { getSearchHighlight } from "../search";
 import * as socket from "../socket";
 import { anyOf, dispatchWindowEvent } from "../../shared/util";
@@ -101,21 +100,21 @@ export default class PDFAnnoPage {
    * @param {Array<File>} files - files user selected in a file dialog.
    * @return {Promise}
    */
-  loadFiles(files) {
-    return loadFiles(files).then(result => {
-      this.contentFiles = result.contents.map(c => {
-        return Object.assign(c, {
-          selected: false
-        });
-      });
-      this.annoFiles = result.annos.map(a => {
-        return Object.assign(a, {
-          primary: false,
-          reference: false
-        });
-      });
-    });
-  }
+  // loadFiles(files) {
+  //   return loadFiles(files).then(result => {
+  //     this.contentFiles = result.contents.map(c => {
+  //       return Object.assign(c, {
+  //         selected: false
+  //       });
+  //     });
+  //     this.annoFiles = result.annos.map(a => {
+  //       return Object.assign(a, {
+  //         primary: false,
+  //         reference: false
+  //       });
+  //     });
+  //   });
+  // }
 
   getContentFile(name) {
     const items = this.contentFiles.filter(c => c.name === name);
@@ -677,7 +676,7 @@ export default class PDFAnnoPage {
     // current.
     const currentAnnotations = this.getAllAnnotations();
     let currentFileName; // = annoUI.downloadButton.getDownloadFileName(this.getCurrentContentName)
-      // TODO Refactoring (use in downloadButton)
+    // TODO Refactoring (use in downloadButton)
     (() => {
       let primaryAnnotationName;
       $("#dropdownAnnoPrimary a").each((index, element) => {

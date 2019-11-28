@@ -15,7 +15,7 @@ import * as pdftxtDownload from "./page/pdftxtdownload";
 import { showLoader } from "./page/util/display";
 import * as ws from "./page/socket";
 import PDFAnnoPage from "./page/pdf/PDFAnnoPage";
-import * as deepscholar from "./deepscholar";
+// import * as deepscholar from "./deepscholar";
 import * as constants from "./shared/constants";
 
 /**
@@ -82,13 +82,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     $(`.nav-tabs a[href="#tab${tabIndex}"]`).click();
   }
 
-  if (deepscholar.isTarget()) {
-    // Display for DeepScholar.
-    deepscholar.initialize();
-  } else {
-    // Show a content.
-    displayViewer();
-  }
+  // if (deepscholar.isTarget()) {
+  //   // Display for DeepScholar.
+  //   deepscholar.initialize();
+  // } else {
+  //   // Show a content.
+  displayViewer();
+  // }
 });
 
 async function displayViewer() {
