@@ -9,24 +9,22 @@ let globalEvent
  * Rect Annotation.
  */
 export default class RectAnnotation extends AbstractAnnotation {
-
   /**
    * Constructor.
    */
-  constructor () {
-
+  constructor() {
     super()
 
     globalEvent = window.globalEvent
 
-    this.uuid     = null
-    this.type     = 'rect'
-    this.x        = 0
-    this.y        = 0
-    this.width    = 0
-    this.height   = 0
-    this.text     = null
-    this.color    = null
+    this.uuid = null
+    this.type = 'rect'
+    this.x = 0
+    this.y = 0
+    this.width = 0
+    this.height = 0
+    this.text = null
+    this.color = null
     this.readOnly = false
     this.$element = this.createDummyElement()
 
@@ -37,52 +35,54 @@ export default class RectAnnotation extends AbstractAnnotation {
   /**
    * Create an instance from an annotation data.
    */
-  static newInstance (annotation) {
-    let rect      = new RectAnnotation()
-    rect.uuid     = annotation.uuid || uuid()
-    rect.x        = annotation.x
-    rect.y        = annotation.y
-    rect.width    = annotation.width
-    rect.height   = annotation.height
-    rect.text     = annotation.text
-    rect.color    = annotation.color
+  static newInstance(annotation) {
+    let rect = new RectAnnotation()
+    rect.uuid = annotation.uuid || uuid()
+    rect.x = annotation.x
+    rect.y = annotation.y
+    rect.width = annotation.width
+    rect.height = annotation.height
+    rect.text = annotation.text
+    rect.color = annotation.color
     rect.readOnly = annotation.readOnly || false
-    rect.zIndex   = annotation.zIndex || 10
+    rect.zIndex = annotation.zIndex || 10
     return rect
   }
 
   /**
    * Create an instance from a TOML object.
    */
-  static newInstanceFromTomlObject (tomlObject) {
-    let d      = tomlObject
+  static newInstanceFromTomlObject(tomlObject) {
+    let d = tomlObject
     d.position = d.position.map(parseFloat)
-    d.x        = d.position[0]
-    d.y        = convertFromExportY(d.page, d.position[1])
-    d.width    = d.position[2]
-    d.height   = d.position[3]
-    d.text     = d.label
-    let rect   = RectAnnotation.newInstance(d)
+    d.x = d.position[0]
+    d.y = convertFromExportY(d.page, d.position[1])
+    d.width = d.position[2]
+    d.height = d.position[3]
+    d.text = d.label
+    let rect = RectAnnotation.newInstance(d)
     return rect
   }
 
   /**
    * Set a hover event.
    */
-  setHoverEvent () {
-    this.$element.find('.anno-rect, .anno-knob').hover(
-      this.handleHoverInEvent,
-      this.handleHoverOutEvent
-    )
+  setHoverEvent() {
+    this.$element
+      .find('.anno-rect, .anno-knob')
+      .hover(this.handleHoverInEvent, this.handleHoverOutEvent)
   }
 
   /**
    * Delete the annotation from rendering, a container in window, and a container in localStorage.
    */
-  destroy () {
+  destroy() {
     let promise = super.destroy()
     this.emit('delete')
-    window.globalEvent.removeListener('deleteSelectedAnnotation', this.deleteSelectedAnnotation)
+    window.globalEvent.removeListener(
+      'deleteSelectedAnnotation',
+      this.deleteSelectedAnnotation
+    )
     window.globalEvent.removeListener('enableViewMode', this.enableViewMode)
     return promise
   }
@@ -90,55 +90,55 @@ export default class RectAnnotation extends AbstractAnnotation {
   /**
    * Create an annotation data for save.
    */
-  createAnnotation () {
+  createAnnotation() {
     return {
-      uuid      : this.uuid,
-      type      : this.type,
-      x         : this.x,
-      y         : this.y,
-      width     : this.width,
-      height    : this.height,
-      text      : this.text,
-      color     : this.color,
-      readyOnly : this.readOnly
+      uuid: this.uuid,
+      type: this.type,
+      x: this.x,
+      y: this.y,
+      width: this.width,
+      height: this.height,
+      text: this.text,
+      color: this.color,
+      readyOnly: this.readOnly,
     }
   }
 
   /**
    * Delete the annotation if selected.
    */
-  deleteSelectedAnnotation () {
+  deleteSelectedAnnotation() {
     super.deleteSelectedAnnotation()
   }
 
   /**
    * Get the position for text.
    */
-  getTextPosition () {
+  getTextPosition() {
     return {
-      x : this.x + 7,
-      y : this.y - 20
+      x: this.x + 7,
+      y: this.y - 20,
     }
   }
 
   /**
    * Handle a selected event on a text.
    */
-  handleTextSelected () {
+  handleTextSelected() {
     this.select()
   }
 
   /**
    * Handle a deselected event on a text.
    */
-  handleTextDeselected () {
+  handleTextDeselected() {
     this.deselect()
   }
 
   /**
    * Handle a hovein event on a text.
    */
-  handleTextHoverIn () {
+  handleTextHoverIn() {
     this.highlight()
     this.emit('hoverin')
   }
@@ -146,7 +146,7 @@ export default class RectAnnotation extends AbstractAnnotation {
   /**
    * Handle a hoveout event on a text.
    */
-  handleTextHoverOut () {
+  handleTextHoverOut() {
     this.dehighlight()
     this.emit('hoverout')
   }
@@ -154,7 +154,7 @@ export default class RectAnnotation extends AbstractAnnotation {
   /**
    * Save a new text.
    */
-  handleTextChanged (newText) {
+  handleTextChanged(newText) {
     console.log('rect:handleTextChanged:', newText)
     this.text = newText
     this.save()
@@ -163,7 +163,7 @@ export default class RectAnnotation extends AbstractAnnotation {
   /**
    * Handle a hoverin event.
    */
-  handleHoverInEvent (e) {
+  handleHoverInEvent(e) {
     super.handleHoverInEvent(e)
 
     let $elm = $(e.currentTarget)
@@ -175,7 +175,7 @@ export default class RectAnnotation extends AbstractAnnotation {
   /**
    * Handle a hoverout event.
    */
-  handleHoverOutEvent (e) {
+  handleHoverOutEvent(e) {
     super.handleHoverOutEvent(e)
 
     let $elm = $(e.currentTarget)
@@ -187,14 +187,14 @@ export default class RectAnnotation extends AbstractAnnotation {
   /**
    * Handle a click event.
    */
-  handleClickEvent (e) {
+  handleClickEvent(e) {
     super.handleClickEvent(e)
   }
 
   /**
    * Handle a mousedown event.
    */
-  handleMouseDownOnRect () {
+  handleMouseDownOnRect() {
     console.log('handleMouseDownOnRect')
 
     this.originalX = this.x
@@ -211,8 +211,7 @@ export default class RectAnnotation extends AbstractAnnotation {
   /**
    * Handle a mousemove event.
    */
-  handleMouseMoveOnDocument (e) {
-
+  handleMouseMoveOnDocument(e) {
     this._dragging = true
 
     if (!this.startX) {
@@ -223,8 +222,8 @@ export default class RectAnnotation extends AbstractAnnotation {
     this.endY = parseInt(e.clientY)
 
     let diff = scaleDown({
-      x : this.endX - this.startX,
-      y : this.endY - this.startY
+      x: this.endX - this.startX,
+      y: this.endY - this.startY,
     })
 
     this.x = this.originalX + diff.x
@@ -238,8 +237,7 @@ export default class RectAnnotation extends AbstractAnnotation {
   /**
    * Handle a mouseup event.
    */
-  handleMouseUpOnDocument () {
-
+  handleMouseUpOnDocument() {
     if (this._dragging) {
       this._dragging = false
 
@@ -263,24 +261,28 @@ export default class RectAnnotation extends AbstractAnnotation {
     }
   }
 
-  enableDragAction () {
-    this.$element.find('.anno-rect, circle')
+  enableDragAction() {
+    this.$element
+      .find('.anno-rect, circle')
       .off('mousedown', this.handleMouseDownOnRect)
       .on('mousedown', this.handleMouseDownOnRect)
   }
 
-  disableDragAction () {
-    this.$element.find('.anno-rect, circle')
+  disableDragAction() {
+    this.$element
+      .find('.anno-rect, circle')
       .off('mousedown', this.handleMouseDownOnRect)
   }
 
   /**
    * Enable view mode.
    */
-  enableViewMode () {
+  enableViewMode() {
     super.enableViewMode()
     if (!this.readOnly) {
-      this.$element.find('.anno-rect, .anno-knob').on('click', this.handleClickEvent)
+      this.$element
+        .find('.anno-rect, .anno-knob')
+        .on('click', this.handleClickEvent)
       this.enableDragAction()
     }
   }
@@ -288,10 +290,9 @@ export default class RectAnnotation extends AbstractAnnotation {
   /**
    * Disable view mode.
    */
-  disableViewMode () {
+  disableViewMode() {
     super.disableViewMode()
     this.$element.find('.anno-rect, .anno-knob').off('click')
     this.disableDragAction()
   }
-
 }

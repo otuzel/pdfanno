@@ -10,7 +10,7 @@ import { renderRelation } from './renderRelation'
  * @param {Object} viewport The page's viewport data
  * @return {Node}
  */
-function transform (node, viewport) {
+function transform(node, viewport) {
   node.style.transform = `scale(${viewport.scale})`
   return node
 }
@@ -23,7 +23,7 @@ function transform (node, viewport) {
  * @param {Object} viewport The page's viewport data
  * @return {SVGElement} A node that was created and appended by this function
  */
-export default function appendChild (svg, annotation, viewport) {
+export default function appendChild(svg, annotation, viewport) {
   // TODO no need third argument(viewport) ?
   if (!viewport) {
     viewport = window.PDFView.pdfViewer.getPageView(0).viewport
@@ -31,24 +31,23 @@ export default function appendChild (svg, annotation, viewport) {
 
   let child
   switch (annotation.type) {
-  case 'rect':
-    child = renderRect(annotation, svg)
-    break
-  case 'span':
-    child = renderSpan(annotation, svg)
-    break
-  case 'textbox':
-    child = renderText(annotation, svg)
-    break
-  case 'relation':
-    child = renderRelation(annotation, svg)
-    break
+    case 'rect':
+      child = renderRect(annotation, svg)
+      break
+    case 'span':
+      child = renderSpan(annotation, svg)
+      break
+    case 'textbox':
+      child = renderText(annotation, svg)
+      break
+    case 'relation':
+      child = renderRelation(annotation, svg)
+      break
   }
 
   // If no type was provided for an annotation it will result in node being null.
   // Skip appending/transforming if node doesn't exist.
   if (child) {
-
     let elm = transform(child, viewport)
 
     if (annotation.type === 'textbox') {
