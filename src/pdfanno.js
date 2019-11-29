@@ -206,19 +206,6 @@ function setupUI() {
     }
   });
 
-  // Primary anno dropdown.
-  annoUI.primaryAnnoDropdown.setup({
-    clearPrimaryAnnotations: window.annoPage.clearAllAnnotations,
-    displayPrimaryAnnotation: annoName =>
-      window.annoPage.displayAnnotation(true)
-  });
-
-  // Reference anno dropdown.
-  annoUI.referenceAnnoDropdown.setup({
-    displayReferenceAnnotations: annoNames =>
-      window.annoPage.displayAnnotation(false)
-  });
-
   // Anno list dropdown.
   annoUI.annoListDropdown.setup({
     getAnnotations: () => {

@@ -1,19 +1,19 @@
 /**
  * Create text layers which enable users to select texts.
  */
-import { customizeAnalyzeResult, extractMeta } from './util/analyzer'
+import { customizeAnalyzeResult, extractMeta } from "./util/analyzer";
 
 /**
  * Text layer data.
  */
-let pages
+let pages;
 
 /**
  * Setup text layers.
  */
 export function setup(analyzeData) {
   // Create text layers data.
-  pages = customizeAnalyzeResult(analyzeData)
+  pages = customizeAnalyzeResult(analyzeData);
 }
 
 /**
@@ -23,25 +23,25 @@ export function setup(analyzeData) {
  * @returns {*} - The text data if found, whereas null.
  */
 window.findText = function(page, point) {
-  const metaList = pages[page - 1].meta
+  const metaList = pages[page - 1].meta;
 
   for (let i = 0, len = metaList.length; i < len; i++) {
-    const info = metaList[i]
+    const info = metaList[i];
 
     if (!info) {
-      continue
+      continue;
     }
 
-    const { position, char, x, y, w, h } = extractMeta(info)
+    const { position, char, x, y, w, h } = extractMeta(info);
 
     // is Hit?
     if (x <= point.x && point.x <= x + w && y <= point.y && point.y <= y + h) {
-      return { position, char, x, y, w, h }
+      return { position, char, x, y, w, h };
     }
   }
 
-  return null
-}
+  return null;
+};
 
 /**
  * Find the texts.
@@ -51,87 +51,87 @@ window.findText = function(page, point) {
  * @returns {Array} - the texts.
  */
 window.findTexts = function(page, startPosition, endPosition) {
-  const items = []
+  const items = [];
 
   if (startPosition == null || endPosition == null) {
-    return items
+    return items;
   }
 
-  const metaList = pages[page - 1].meta
+  const metaList = pages[page - 1].meta;
 
-  let inRange = false
+  let inRange = false;
 
   for (let index = 0, len = metaList.length; index < len; index++) {
-    const info = metaList[index]
+    const info = metaList[index];
 
     if (!info) {
       if (inRange) {
-        items.push(null)
+        items.push(null);
       }
-      continue
+      continue;
     }
 
-    const data = extractMeta(info)
-    const { position } = data
+    const data = extractMeta(info);
+    const { position } = data;
 
     if (startPosition <= position) {
-      inRange = true
-      items.push(data)
+      inRange = true;
+      items.push(data);
     }
 
     if (endPosition <= position) {
-      break
+      break;
     }
   }
 
-  return items
-}
+  return items;
+};
 
 /**
  * Merge user selections.
  */
 window.mergeRects = function(rects) {
   // Remove null.
-  rects = rects.filter(rect => rect)
+  rects = rects.filter(rect => rect);
 
   if (rects.length === 0) {
-    return []
+    return [];
   }
 
   // Normalize.
   rects = rects.map(rect => {
-    rect.top = rect.top || rect.y
-    rect.left = rect.left || rect.x
-    rect.right = rect.right || rect.x + rect.w
-    rect.bottom = rect.bottom || rect.y + rect.h
-    return rect
-  })
+    rect.top = rect.top || rect.y;
+    rect.left = rect.left || rect.x;
+    rect.right = rect.right || rect.x + rect.w;
+    rect.bottom = rect.bottom || rect.y + rect.h;
+    return rect;
+  });
 
   // a virtical margin of error.
-  const error = 5 * scale()
+  const error = 5 * scale();
 
-  let tmp = convertToObject(rects[0])
-  let newRects = [tmp]
+  let tmp = convertToObject(rects[0]);
+  let newRects = [tmp];
   for (let i = 1; i < rects.length; i++) {
     // Same line -> Merge rects.
     if (withinMargin(rects[i].top, tmp.top, error)) {
-      tmp.top = Math.min(tmp.top, rects[i].top)
-      tmp.left = Math.min(tmp.left, rects[i].left)
-      tmp.right = Math.max(tmp.right, rects[i].right)
-      tmp.bottom = Math.max(tmp.bottom, rects[i].bottom)
-      tmp.x = tmp.left
-      tmp.y = tmp.top
-      tmp.width = tmp.right - tmp.left
-      tmp.height = tmp.bottom - tmp.top
+      tmp.top = Math.min(tmp.top, rects[i].top);
+      tmp.left = Math.min(tmp.left, rects[i].left);
+      tmp.right = Math.max(tmp.right, rects[i].right);
+      tmp.bottom = Math.max(tmp.bottom, rects[i].bottom);
+      tmp.x = tmp.left;
+      tmp.y = tmp.top;
+      tmp.width = tmp.right - tmp.left;
+      tmp.height = tmp.bottom - tmp.top;
 
       // New line -> Create a new rect.
     } else {
-      tmp = convertToObject(rects[i])
-      newRects.push(tmp)
+      tmp = convertToObject(rects[i]);
+      newRects.push(tmp);
     }
   }
-  return newRects
-}
+  return newRects;
+};
 
 /**
  * Convert a DOMList to a javascript plan object.
@@ -145,17 +145,17 @@ function convertToObject(rect) {
     x: rect.x,
     y: rect.y,
     width: rect.width,
-    height: rect.height,
-  }
+    height: rect.height
+  };
 }
 
 /**
  * Check the value(x) within the range.
  */
 function withinMargin(x, base, margin) {
-  return base - margin <= x && x <= base + margin
+  return base - margin <= x && x <= base + margin;
 }
 
 function scale() {
-  return window.PDFView.pdfViewer.getPageView(0).viewport.scale
+  return window.PDFView.pdfViewer.getPageView(0).viewport.scale;
 }

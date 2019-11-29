@@ -45,76 +45,9 @@ export default class PDFAnnoPage {
     unlistenWindowLeaveEvent();
 
     dispatchWindowEvent("iframeReady");
-    // })
-
-    // window.iframeWindow.addEventListener('pagerendered', ev => {
-    //     dispatchWindowEvent('pagerendered', ev.detail)
-    // })
-
-    // window.iframeWindow.addEventListener('annotationrendered', () => {
-    //     dispatchWindowEvent('annotationrendered')
-    // })
-
-    // Set the confirm dialog when leaving a page.
-    // window.iframeWindow.addEventListener('annotationUpdated', () => {
-    //     listenWindowLeaveEvent()
-    //     dispatchWindowEvent('annotationUpdated')
-    // })
-
-    // enable text input.
-    // window.iframeWindow.addEventListener('enableTextInput', e => {
-    //     dispatchWindowEvent('enableTextInput', e.detail)
-    // })
-    //
-    // // disable text input.
-    // window.iframeWindow.addEventListener('disappearTextInput', e => {
-    //     dispatchWindowEvent('disappearTextInput', e.detail)
-    // })
-    //
-    // window.iframeWindow.addEventListener('annotationDeleted', e => {
-    //     dispatchWindowEvent('annotationDeleted', e.detail)
-    // })
-    //
-    // window.iframeWindow.addEventListener('annotationHoverIn', e => {
-    //     dispatchWindowEvent('annotationHoverIn', e.detail)
-    // })
-    //
-    // window.iframeWindow.addEventListener('annotationHoverOut', e => {
-    //     dispatchWindowEvent('annotationHoverOut', e.detail)
-    // })
-    //
-    // window.iframeWindow.addEventListener('annotationSelected', e => {
-    //     dispatchWindowEvent('annotationSelected', e.detail)
-    // })
-    //
-    // window.iframeWindow.addEventListener('annotationDeselected', () => {
-    //     dispatchWindowEvent('annotationDeselected')
-    // })
 
     setInterval(this.checkAnnotationUpdate, 1500);
   }
-
-  /**
-   * Load files(contents and annoFiles).
-   *
-   * @param {Array<File>} files - files user selected in a file dialog.
-   * @return {Promise}
-   */
-  // loadFiles(files) {
-  //   return loadFiles(files).then(result => {
-  //     this.contentFiles = result.contents.map(c => {
-  //       return Object.assign(c, {
-  //         selected: false
-  //       });
-  //     });
-  //     this.annoFiles = result.annos.map(a => {
-  //       return Object.assign(a, {
-  //         primary: false,
-  //         reference: false
-  //       });
-  //     });
-  //   });
-  // }
 
   getContentFile(name) {
     const items = this.contentFiles.filter(c => c.name === name);

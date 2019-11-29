@@ -102,7 +102,6 @@ export function saveSpan({
     knob,
     border
   };
-  console.log("test");
 
   // Save.
   let spanAnnotation = SpanAnnotation.newInstance(annotation);
@@ -189,7 +188,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const { top, left } = canvasElement.getBoundingClientRect();
     const x = e.clientX - left;
     const y = e.clientY - top;
-
+    debugger;
     // Find the data in pdftxt.
     const item = window.findText(page, scaleDown({ x, y }));
     if (item) {

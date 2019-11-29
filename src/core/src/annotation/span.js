@@ -97,7 +97,6 @@ export default class SpanAnnotation extends AbstractAnnotation {
    * Render annotation(s).
    */
   render() {
-    console.log("span.js render()");
     if (!this.rectangles || this.rectangles.length === 0) {
       if (!this.page || !this.textRange) {
         return console.log(
