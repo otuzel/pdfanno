@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "anno-ui": "github:paperai/anno-ui#master",
-    "axios": "^0.15.2",
+    "axios": "^0.21.1",
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "gulp-htmlmin": "^4.0.0",
